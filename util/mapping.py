@@ -1,3 +1,5 @@
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+
 mapping = {
     'a': 0,
     'b': 1,

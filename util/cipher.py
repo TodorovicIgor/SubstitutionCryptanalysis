@@ -29,43 +29,52 @@ def decrypt_char(c, k):
         return map.mapping[p]
 
 
-def encrypt(plain, key):
-    if type(key) == str:
-        # poly alphabetic encryption
-        # fit key size to plaintext size
-        key = key * (len(plain) // len(key)+1)
-        # format plaintext
-        plain = transform(plain)
-        crypted = ""
-        for i in range(len(plain)):
-            crypted += encrypt_char(plain[i], key[i])
-        return crypted
-    if type(key) == int:
-        # mono alphabetic encryption
-        # format plaintext
-        plain = transform(plain)
-        crypted = ""
-        for i in range(len(plain)):
-            crypted += encrypt_char(plain[i], key)
-        return crypted
+def encrypt_poly(plain, key):
+    # fit key size to plaintext size
+    key = key * (len(plain) // len(key)+1)
+    # format plaintext
+    plain = transform(plain)
+    cipher = ""
+    for i in range(len(plain)):
+        cipher += encrypt_char(plain[i], key[i])
+    return cipher
 
 
-def decrypt(cipher, key):
-    if type(key) == str:
-        # poly alphabetic decryption
-        # fit key size to plaintext size
-        key = key * (len(cipher) // len(key) + 1)
-        plain = ""
-        for i in range(len(cipher)):
-            plain += decrypt_char(cipher[i], key[i])
-        return plain
-    if type(key) == int:
-        # mono alphabetic decryption
-        plain = ""
-        for i in range(len(cipher)):
-            plain += decrypt_char(cipher[i], key)
-        return plain
+def decrypt_poly(cipher, key):
+    # fit key size to plaintext size
+    key = key * (len(cipher) // len(key) + 1)
+    plain = ""
+    for i in range(len(cipher)):
+        plain += decrypt_char(cipher[i], key[i])
+    return plain
 
+
+def generate_key_mono(key):
+    ret = key
+    for char in map.alphabet:
+        if char not in key:
+            ret += char
+    return ret
+
+
+def encrypt_mono(plain, key):
+    key = generate_key_mono(key)
+    plain = transform(plain)
+    cipher = ""
+    for i in range(len(plain)):
+        # char from plain[i] maps to integer which is indexing substitution char in key
+        cipher += key[map.mapping[plain[i]]]
+    return cipher
+
+
+def decrypt_mono(cipher, key):
+    #print(key)
+    key = generate_key_mono(key)
+    plain = ""
+    for i in range(len(cipher)):
+        # char from cipher[i] is used to get position of plaintext char from key
+        plain += map.alphabet[key.find(cipher[i])]
+    return plain
 
 # TESTING
 '''
