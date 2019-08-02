@@ -1,4 +1,5 @@
 alphabet = "abcdefghijklmnopqrstuvwxyz"
+freq = "etaoinsrhldcumfgpwybvkjxzq"
 
 mapping = {
     'a': 0,

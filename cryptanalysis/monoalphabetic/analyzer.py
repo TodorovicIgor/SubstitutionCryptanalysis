@@ -1,5 +1,5 @@
 from cryptanalysis.monoalphabetic import freq_matrix, key
-from util import cipher
+from util import cipher, mapping
 import random
 
 
@@ -18,15 +18,25 @@ class Analyzer:
     def break_cipher(self):
         self.distribution.load_freq_from_text(self.ciphertext)
         self.best_difference = self.distribution.eval_difference(self.expected, self.key.key)
+        alpha_counter = beta_counter = 0
+
         while True:
-            alpha = int(random.uniform(0, 26))
-            beta = int(random.uniform(0, 26))
-            while beta == alpha:
-                beta = int(random.uniform(0, 26))
+            # alpha = int(random.uniform(0, 26))
+            # beta = int(random.uniform(0, 26))
+            # while beta == alpha:
+            # beta = int(random.uniform(0, 26))
+            alpha = alpha_counter
+            beta = beta_counter
+            beta_counter += 1
+            if beta_counter == 25:
+                beta_counter = 0
+                alpha_counter += 1
+                if alpha_counter == 25 and beta_counter == 25:
+                    break
             new_key = self.key
             new_distribution = self.distribution
             new_key.swap(alpha, beta)
-            new_distribution.swap_cols_rows(alpha, beta)
+            new_distribution.swap_cols_rows(alpha_counter, beta_counter)
             current_difference = new_distribution.eval_difference(self.expected, self.key.key)
             if current_difference < self.best_difference:
                 print("Better")
