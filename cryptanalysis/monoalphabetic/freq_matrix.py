@@ -8,6 +8,8 @@ import os
 
 class FreqMatrix:
 
+    char_to_index = {}
+
     def __init__(self):
         self.hashed = None
         #self.matrix = np.arange(5*5).reshape(5, 5)
@@ -19,17 +21,14 @@ class FreqMatrix:
         for k, v in self.hashed.items():
             self.matrix[map.mapping[k[0]], map.mapping[k[1]]] = float(v)
 
-    def swap_cols_rows(self, index1, index2):
-        self.matrix[:, [index1, index2]] = self.matrix[:, [index2, index1]]
-        self.matrix[[index1, index2], :] = self.matrix[[index2, index1], :]
+    def swap_cols_rows(self, char1, char2):
+        self.matrix[:, [map.mapping[char1], map.mapping[char2]]] = self.matrix[:, [map.mapping[char2], map.mapping[char1]]]
+        self.matrix[[map.mapping[char1], map.mapping[char2]], :] = self.matrix[[map.mapping[char2], map.mapping[char1]], :]
 
     def load_freq_from_text(self, text):
         hashed = {}
         prepared_ret = {}
-        hash_entry = ""
         for i in range(len(text)-1):
-            print(i, i+2)
-            print(text[i:i+2])
             if text[i:i+2] in hashed:
                 temp = hashed[text[i: i+2]]
                 hashed.pop(text[i:i+2])

@@ -13,5 +13,8 @@ class Key:
     def swap(self, index1, index2):
         lst = list(self.key)
         lst[index1], lst[index2] = lst[index2], lst[index1]
-        return ''.join(lst)
+        self.key = ''.join(lst)
+
+    def get_key(self):
+        return self.key
 
