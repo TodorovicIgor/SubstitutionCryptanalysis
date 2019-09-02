@@ -8,11 +8,8 @@ import os
 
 class FreqMatrix:
 
-    char_to_index = {}
-
     def __init__(self):
         self.hashed = None
-        #self.matrix = np.arange(5*5).reshape(5, 5)
         self.matrix = np.zeros((26, 26), dtype=float)
 
     def load_expected_bigram_file(self):

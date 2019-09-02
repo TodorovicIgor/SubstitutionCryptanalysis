@@ -22,7 +22,7 @@ class Analyzer:
 
         while True:
             new_key = self.key
-            print(a, b, a+b)
+            # print(a, b, a+b)
             new_key.swap(a, a+b)
             a += 1
             if a+b > 25:
@@ -46,6 +46,7 @@ class Analyzer:
 
 plaintext = "Friendship contrasted solicitude insipidity in introduced literature it. ""He seemed denote except as oppose do spring my. ""Between any may mention evening age shortly can ability regular. He shortly sixteen of colonel colonel ""evening cordial to. Although jointure an my of mistress servants am weddings. Age why the therefore ""education unfeeling for arranging. Above again money own scale maids ham least led. Returned settling"" produced strongly ecstatic use yourself way. Repulsive extremity enjoyment she perceived nor.""Ladyship it daughter securing procured or am moreover mr. Put sir she exercise vicinity c""heerful wondered. Continual say suspicion provision you neglected sir curiosity unwilling. Simplicity ""end themselves increasing led day sympathize yet. General windows effects not are drawing man garrets. ""Common indeed garden you his ladies out yet. Preference imprudence contrasted to remarkably in on. ""Taken now you him trees tears any. Her object giving end sister except oppose. "
 plaintext2 = file_reader.read_file("ciphertext1.txt")
-ciphertext = cipher.encrypt_mono(plaintext2, "zyxwvutsrqponmlkjihgfedc")
+ciphertext = cipher.encrypt_mono(plaintext, "zyxwvutsrqponmlkjihgfedc")
 a = Analyzer(ciphertext)
+# print(test.distribution.eval_difference(test.expected, test.key.get_key()))
 a.break_cipher()

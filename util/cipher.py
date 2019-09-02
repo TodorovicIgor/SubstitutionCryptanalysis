@@ -1,5 +1,6 @@
 import re
 from util import mapping as map
+import cryptanalysis.monoalphabetic.freq_matrix as freq_matrix
 
 
 def transform(string, regex=r"[a-z]"):
@@ -55,6 +56,13 @@ def generate_key_mono(key):
         if char not in key:
             ret += char
     return ret
+
+
+def analize_plaintext(plaintext):
+    plaintext = transform(plaintext)
+    expected = freq_matrix.FreqMatrix()
+    expected.load_expected_bigram_file()
+    distribution = freq_matrix.FreqMatrix()
 
 
 def encrypt_mono(plain, key):

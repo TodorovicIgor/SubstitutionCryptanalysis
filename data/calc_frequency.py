@@ -1,6 +1,6 @@
 import json as json
 
-onegram = open("../data/one_gram_count.txt", "r")
+onegram = open("one_gram_count.txt", "r")
 input_hash = {}
 frequency_hash = {}
 sum = 0
@@ -17,11 +17,11 @@ for entry in input_hash:
     temp_key = entry
     print(temp_key, temp_val/sum)
     frequency_hash.update({temp_key: temp_val/sum})
-one_gram_freq = open("../data/one_gram_rel_freq.txt", "w")
+one_gram_freq = open("one_gram_rel_freq.txt", "w")
 one_gram_freq.write(json.dumps(frequency_hash))
 print(frequency_hash)
 
-twogram = open("../data/two_gram_count.txt", "r")
+twogram = open("two_gram_count.txt", "r")
 input_hash = {}
 frequency_hash = {}
 sum = 0
@@ -38,6 +38,6 @@ for entry in input_hash:
     temp_key = entry
     print(temp_key, temp_val/sum)
     frequency_hash.update({temp_key: temp_val/sum})
-two_gram_freq = open("../data/two_gram_rel_freq.txt", "w")
+two_gram_freq = open("two_gram_rel_freq.txt", "w")
 two_gram_freq.write(json.dumps(frequency_hash))
 print(frequency_hash)
