@@ -8,7 +8,7 @@ def read_file(name):
     file_reader = open(temp, "r", encoding="utf8")
     line = file_reader.readline()
     while line:
-        print("reading line")
+        # print("reading line")
         ret += transform(line)
         line = file_reader.readline()
     return ret

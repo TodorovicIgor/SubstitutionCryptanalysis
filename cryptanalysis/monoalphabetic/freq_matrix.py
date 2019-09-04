@@ -1,8 +1,9 @@
 import json as json
 import numpy as np
-from util import cipher
-
+from util.cipher import decrypt_mono
+from util.mapping import freq,alphabet
 import util.mapping as map
+import util.file_reader as fr
 import os
 
 
@@ -11,6 +12,12 @@ class FreqMatrix:
     def __init__(self):
         self.hashed = None
         self.matrix = np.zeros((26, 26), dtype=float)
+        self.indexes = alphabet
+
+    def swap_indexes(self, char1, char2):
+        lst = list(self.indexes)
+        lst[self.indexes.find(char1)], lst[self.indexes.find(char2)] = lst[self.indexes.find(char2)], lst[self.indexes.find(char1)]
+        self.indexes = ''.join(lst)
 
     def load_expected_bigram_file(self):
         temp = os.path.join(os.path.dirname(__file__), "../../", "data/", "two_gram_rel_freq.txt")
@@ -19,8 +26,11 @@ class FreqMatrix:
             self.matrix[map.mapping[k[0]], map.mapping[k[1]]] = float(v)
 
     def swap_cols_rows(self, char1, char2):
-        self.matrix[:, [map.mapping[char1], map.mapping[char2]]] = self.matrix[:, [map.mapping[char2], map.mapping[char1]]]
-        self.matrix[[map.mapping[char1], map.mapping[char2]], :] = self.matrix[[map.mapping[char2], map.mapping[char1]], :]
+        index1 = self.indexes.find(char1)
+        index2 = self.indexes.find(char2)
+        self.matrix[:, [index1, index2]] = self.matrix[:, [index2, index1]]
+        self.matrix[[index1, index2], :] = self.matrix[[index2, index1], :]
+        self.swap_indexes(char1, char2)
 
     def load_freq_from_text(self, text):
         hashed = {}
@@ -41,18 +51,20 @@ class FreqMatrix:
         diff = 0
         for char1 in map.alphabet:
             for char2 in map.alphabet:
-                # given guessed key calculate how close distribution matrix is to expected frequency matrix
-                diff += abs(
-                    self.matrix[map.mapping[cipher.decrypt_mono(char1, key)], map.mapping[
-                        cipher.decrypt_mono(char2, key)]]
-                    -
-                    expected_matrix.matrix[map.mapping[char1], map.mapping[char2]]
-                )
+                diff += abs(self.matrix[self.indexes.find(decrypt_mono(char1, key)), self.indexes.find(decrypt_mono(char2, key))]-expected_matrix.matrix[expected_matrix.indexes.find(char1), expected_matrix.indexes.find(char2)])
         return diff
 
-'''
+    def plaintext_suitable(self, file):
+        self.load_freq_from_text(fr.read_file(file))
+        expected = FreqMatrix()
+        expected.load_expected_bigram_file()
+        print(self.eval_difference(expected, alphabet))
+
+
 f = FreqMatrix()
-# f.load_expected_bigram_file()
-f.load_freq_from_text("aaababshdbasdjabsdjabsdajkglbab")
-print(f.matrix)
-'''
+e = FreqMatrix()
+# e.plaintext_suitable("plaintext1.txt")
+f.load_expected_bigram_file()
+# f.load_freq_from_text("aaababbbababbbbb")
+e.load_freq_from_text("aabbabbbababbbbb")
+
