@@ -17,4 +17,3 @@ class Key:
 
     def get_key(self):
         return self.key
-
