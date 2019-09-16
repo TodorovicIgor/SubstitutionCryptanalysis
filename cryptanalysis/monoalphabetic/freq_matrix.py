@@ -1,6 +1,6 @@
 import json as json
 import numpy as np
-from util.cipher import decrypt_mono
+from util.cipher import decrypt_mono, transform
 from util.mapping import freq,alphabet
 import util.mapping as map
 import util.file_reader as fr
@@ -51,7 +51,8 @@ class FreqMatrix:
         diff = 0
         for char1 in map.alphabet:
             for char2 in map.alphabet:
-                diff += abs(self.matrix[self.indexes.find(decrypt_mono(char1, key)), self.indexes.find(decrypt_mono(char2, key))]-expected_matrix.matrix[expected_matrix.indexes.find(char1), expected_matrix.indexes.find(char2)])
+                # diff += abs(self.matrix[self.indexes.find(decrypt_mono(char1, key)), self.indexes.find(decrypt_mono(char2, key))]-expected_matrix.matrix[expected_matrix.indexes.find(char1), expected_matrix.indexes.find(char2)])
+                diff += abs(self.matrix[self.indexes.find(char1), self.indexes.find(char2)]-expected_matrix.matrix[expected_matrix.indexes.find(char1), expected_matrix.indexes.find(char2)])
         return diff
 
     def plaintext_suitable(self, file):
@@ -60,11 +61,20 @@ class FreqMatrix:
         expected.load_expected_bigram_file()
         print(self.eval_difference(expected, alphabet))
 
+    def print_matrix(self):
+        print(self.indexes)
 
+
+'''
 f = FreqMatrix()
 e = FreqMatrix()
-# e.plaintext_suitable("plaintext1.txt")
 f.load_expected_bigram_file()
-# f.load_freq_from_text("aaababbbababbbbb")
-e.load_freq_from_text("aabbabbbababbbbb")
-
+e.load_freq_from_text(transform("lorem ipsum some text here for the testing"))
+print(e.matrix)
+print('*************************************************************************************************')
+e.swap_cols_rows('a', 'm')
+e.swap_cols_rows('g', 'f')
+e.swap_cols_rows('n', 'e')
+print(e.matrix)
+e.print_matrix()
+'''

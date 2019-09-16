@@ -15,6 +15,7 @@ class Analyzer:
         self.current_difference = float('inf')
         self.best_difference = float('inf')
         self.distribution.load_freq_from_text(cipher.decrypt_mono(self.ciphertext, self.key.get_key()))  # step 2
+        # self.distribution.load_freq_from_text(self.ciphertext)  # step 2
 
     def break_cipher(self):
         print("Cipher is", self.ciphertext)
@@ -23,24 +24,18 @@ class Analyzer:
         print("Starting function value is ", self.best_difference, "key is", self.key.key)
         new_iteration = True
         while new_iteration:
-            for a in range(26):
-                for b in range(26):
-
-                    new_iteration = False
+            new_iteration = False
+            print("started new iteration\n\n\n\n")
+            for char1 in mapping.freq:
+                for char2 in mapping.freq:
                     print("\nCurrent key is \t", self.key.get_key())
                     new_key = copy.copy(self.key)  # step 4
                     new_distribution = copy.copy(self.distribution)  # step 5
 
-                    # new_key.swap(a, a+b)    # step 6a
-                    # a = a + 1               # step 6b
-                    # if a+b >= 26:           # step 6c
-                    #     a = 1               # step 6d
-                    #     b = b + 1           # step 6e
-                    #     if b == 25: break   # step 6f
+                    new_key.swap(mapping.freq.find(char1), mapping.freq.find(char2))    # step 6a
 
-                    # print(a, b)
-                    print("New key is \t\t", new_key.get_key(), "swapped", mapping.freq[a], "and", mapping.freq[b])
-                    new_distribution.swap_cols_rows(mapping.freq[a], mapping.freq[b])  # step 7
+                    print("New key is \t\t", new_key.get_key(), "swapped", char1, "and", char2)
+                    new_distribution.swap_cols_rows(char1, char2)  # step 7
                     current_difference = new_distribution.eval_difference(self.expected, new_key.get_key())  # step 8
                     print("New function value is", current_difference, "with net", self.best_difference-current_difference)
                     if current_difference < self.best_difference:  # step 9
@@ -56,9 +51,10 @@ class Analyzer:
         print("Best difference is", self.best_difference)
         print("text is", cipher.decrypt_mono(self.ciphertext, self.key.get_key()))
 
-plaintext = "Friendship contrasted solicitude insipidity in introduced literature it. ""He seemed denote except as oppose do spring my. ""Between any may mention evening age shortly can ability regular. He shortly sixteen of colonel colonel ""evening cordial to. Although jointure an my of mistress servants am weddings. Age why the therefore ""education unfeeling for arranging. Above again money own scale maids ham least led. Returned settling"" produced strongly ecstatic use yourself way. Repulsive extremity enjoyment she perceived nor.""Ladyship it daughter securing procured or am moreover mr. Put sir she exercise vicinity c""heerful wondered. Continual say suspicion provision you neglected sir curiosity unwilling. Simplicity ""end themselves increasing led day sympathize yet. General windows effects not are drawing man garrets. ""Common indeed garden you his ladies out yet. Preference imprudence contrasted to remarkably in on. ""Taken now you him trees tears any. Her object giving end sister except oppose. "
-ciphertext1 = file_reader.read_file("ciphertext1.txt")
-ciphertext = cipher.encrypt_mono(plaintext, "bcadefghijklmnopqrstuvwxyz")
+
+plaintext2 = file_reader.read_file("plaintext2.txt")
+
+ciphertext2 = cipher.encrypt_mono(plaintext2, "etaonisrhldcumfgpwybvkjxzq")
 # a = Analyzer(cipher.transform(plaintext))
-a = Analyzer(ciphertext)
+a = Analyzer(ciphertext2)
 a.break_cipher()
