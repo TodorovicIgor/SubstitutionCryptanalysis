@@ -47,14 +47,15 @@ class Analyzer:
                         self.distribution = copy.copy(new_distribution)         # step 12
         # step 13
 
+        print(self.distribution.matrix)
+
         print("Best key is:", self.key.get_key())
         print("Best difference is", self.best_difference)
         print("text is", cipher.decrypt_mono(self.ciphertext, self.key.get_key()))
 
 
-plaintext2 = file_reader.read_file("plaintext2.txt")
-
-ciphertext2 = cipher.encrypt_mono(plaintext2, "etaonisrhldcumfgpwybvkjxzq")
-# a = Analyzer(cipher.transform(plaintext))
-a = Analyzer(ciphertext2)
-a.break_cipher()
+# plaintext2 = file_reader.read_file("plaintext2.txt")
+# ciphertext2 = cipher.encrypt_mono(plaintext2, "abcdefghijklmnopqrstuvwxyz")
+# # a = Analyzer(cipher.transform(plaintext))
+# a = Analyzer(ciphertext2)
+# a.break_cipher()
