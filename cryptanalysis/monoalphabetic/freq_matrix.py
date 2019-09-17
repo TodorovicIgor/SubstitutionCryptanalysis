@@ -44,6 +44,11 @@ class FreqMatrix:
             self.matrix[alphabet.find(k[0]), alphabet.find(k[1])] = v/len(text)
         self.hashed = prepared_ret
 
+    def load_freq_from_files(self, files):
+        total_text_length = 0
+        for f in files:
+            text = f.file_reader.read_file(f)
+
     def eval_difference(self, expected_matrix):
         diff = 0
         for char1 in map.alphabet:
